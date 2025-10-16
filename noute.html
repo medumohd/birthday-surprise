@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body{
+      background-color: rgb(0, 0, 52);
+      color: white;
+      font-family: inter;
+      margin: 0;
+      padding: 0 1rem;
+    }
+
+    h1{
+      letter-spacing: 1%;
+      line-height: 1.2;
+      font-weight: 500;
+      text-align: center;
+      font-size: clamp(1.75rem, 3.5vw + 1rem, 2.75rem);
+      margin-bottom: 0;
+      margin-top: 1rem;
+    }
+
+    h4{
+      text-align: center;
+      font-weight: 300;
+      font-size: clamp(0.9rem, 0.6rem + 0.8vw, 1.1rem);
+      color: rgb(255, 255, 255, 0.75);
+      margin-top: 0.8em;
+    }
+
+    .inputs{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 1.25em 1.7em;
+      width: min(92vw, 720px);
+      margin: 2.2em auto;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    label{
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+      text-align: left;
+      width: 100%;
+      max-width: 340px;
+    }
+
+    input{
+      width: 100%;
+      padding: 0.75em 1em;
+      border-radius: 0.6em;
+      border: 2px solid rgba(255,255,255,0.45);
+      margin-top: 0.45em;
+      position: relative;
+      right: auto;
+      box-sizing: border-box;
+      font-size: 1rem;
+      color: #fff;
+      background: rgba(255,255,255,0.06);
+      transition: transform .12s ease, background-color .12s ease, border-color .12s ease, box-shadow .12s ease;
+    }
+
+    input:focus{
+      outline: none;
+      border-color: rgba(255,255,255,0.75);
+      background: rgba(255,255,255,0.09);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+
+    /* Normalize date input size/appearance to match text input */
+    input[type="date"]{
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: textfield;
+      font-size: 1rem;
+      padding: 0.75em 1em;
+      line-height: 1.2;
+    }
+
+    /* Improve visibility of date picker icon on dark bg */
+    input[type="date"]::-webkit-calendar-picker-indicator{
+      filter: invert(1) opacity(0.8);
+    }
+
+    .footer{
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      margin-top: 0;
+      width: min(92vw, 720px);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #checkBtn{
+      padding: .85em 1.2em;
+      border-radius: 0.6em;
+      border: none;
+      margin-top: 0.2em;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      background-color: rgb(48, 48, 185);
+      color: white;
+      font-weight: 600;
+      font-family: inter;
+      width: 100%;
+      max-width: 340px;
+      font-size: 1rem;
+    }
+
+    /* Styling for the hint button */
+    .hint-btn {
+      width: 2.25em;
+      height: 2.25em;
+      margin-left: 0;
+      background-color: #99e8f4;
+      color: #003042;
+      border: none;
+      font-weight: 700;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.22);
+      font-size: 0.95rem;
+    }
+
+    .hint-btn:hover{
+      transform: translateY(-1px) scale(1.03);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      background-color: #bff2fa;
+    }
+
+    .hidden-hint-text{
+      text-align: center;
+      margin: 0.5em auto 0;
+      color: #bfeff7;
+      background: rgba(153, 232, 244, 0.12);
+      border: 1px solid rgba(153, 232, 244, 0.4);
+      padding: 0.75em 1em;
+      border-radius: 0.6em;
+      width: min(92vw, 340px);
+      line-height: 1.4;
+      font-size: 0.95rem;
+    }
+
+    .hint{
+      width: min(92vw, 340px);
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5em;
+    }
+
+    .hint-btn,
+    .hidden-hint-text {
+      display: none;
+    }
+
+    .par1{
+      font-size: 0.7em;
+      color: rgb(255, 255, 255, 0.6);
+    }
+
+    #message{
+      text-align: center;
+      color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.12);
+      border: 1px solid rgba(255, 107, 107, 0.4);
+      transition: 0.2s ease;
+      border-radius: 0.6em;
+      padding: 0.6em 0.9em;
+      width: min(92vw, 340px);
+      margin: 1em auto 0.5em;
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+
+    #message:empty{
+      display: none;
+    }
+    
+
+    /* Responsive adjustments */
+    @media (max-width: 768px){
+      .inputs{
+        flex-direction: column;
+        align-items: stretch;
+      }
+      label{
+        max-width: none;
+      }
+      #checkBtn{
+        max-width: none;
+      }
+    }
+
+    @media (min-width: 1024px){
+      .inputs{ width: min(86vw, 900px); }
+      .footer{ width: min(86vw, 900px); }
+    }
+
+    /* Tighten proportions on very small screens */
+    @media (max-width: 480px){
+      input,
+      input[type="date"]{
+        font-size: 1.05rem;
+        padding: 0.9em 1.1em;
+        border-radius: 0.65em;
+      }
+      .hint-btn{
+        width: 2em;
+        height: 2em;
+        margin-left: 0.25em;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.22);
+        font-size: 0.9rem;
+      }
+      #checkBtn{
+        font-size: 1.05rem;
+        padding: 1rem 1.35rem;
+        border-radius: 0.7em;
+      }
+      #message{
+        padding: 0.5em 0.75em;
+        font-size: 0.9rem;
+        margin-top: 0.8em;
+      }
+      .hidden-hint-text{
+        padding: 0.6em 0.8em;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Unified button interactions across the site */
+    button{
+      cursor: pointer;
+      transition: background-color .15s ease, filter .15s ease, transform .12s ease, box-shadow .12s ease;
+    }
+    button:hover{
+      filter: brightness(0.92);
+    }
+    button:active{
+      filter: brightness(0.85);
+      transform: translateY(1px) scale(0.99);
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="header">
+    <h1>Welcome L5azibe!</h1>
+    <h4>This website may or may not work</h4>
+  </div>
+  <div class="inputs">
+    <label for="name">First name
+      <input type="text" id="nameInput" placeholder="7medu">
+    </label>
+    <label for="date">Date of birth
+      <input type="date" id="dateInput" placeholder="select a date">
+    </label>
+  </div>
+  <div class="footer">
+    <button id="checkBtn">Let's find out</button>
+    <p class="par1">Rights Are Not Reserved 2025</p>
+  </div>
+  <p id="message" role="alert" aria-live="polite"></p>
+  <div class="hint">
+    <button id="hint-button" class="hint-btn" aria-controls="hint-text" aria-expanded="false" aria-label="Show hint">?</button>
+    <p id="hint-text" class="hidden-hint-text" role="note">starts with "N", 5 letters, ends with "e"</p>
+  </div>
+  <script>
+    const nameInput=document.getElementById('nameInput');
+    const dateInput=document.getElementById('dateInput');
+    const checkBtn=document.getElementById('checkBtn');
+    const message=document.getElementById('message');
+    const hintBtn=document.getElementById('hint-button');
+    const hintText=document.getElementById('hint-text');
+
+    const correctName= 'Noute';
+    const correctDate= '2004-10-18';
+
+    checkBtn.addEventListener( 'click', function(){
+      const nameValue=nameInput.value.trim();
+      const dateValue=dateInput.value;
+
+      const nameOk = nameValue===correctName;
+      const dateOk = dateValue===correctDate;
+
+      if (nameOk && dateOk){
+        hintBtn.style.display='none';
+        hintBtn.setAttribute('aria-expanded','false');
+        hintText.style.display='none';
+        message.textContent='';
+        window.location.href='noute1.html';
+      } else {
+        if (!nameOk && !dateOk){
+          message.textContent='Wrong name or date';
+        } else if (!nameOk){
+          message.textContent='Wrong name';
+        } else {
+          message.textContent='Wrong date';
+        }
+        hintBtn.style.display='inline-flex';
+        hintBtn.setAttribute('aria-expanded','false');
+        hintText.style.display='none';
+      }
+    }
+    )
+
+    hintBtn.addEventListener('click', function(){
+      const isHidden = (hintText.style.display==='none' || hintText.style.display==='');
+      hintText.style.display = isHidden ? 'block' : 'none';
+      hintBtn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+    })
+  </script>
+
+</body>
+</html>

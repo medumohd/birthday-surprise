@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+  <style>
+    /* Page-scoped fixes to prevent overflow on small screens */
+    .images{
+      width: 100%;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #teacher-choice-text{
+      width: 100%;
+      max-width: 340px;
+      box-sizing: border-box;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .submit{
+      width: 100%;
+      max-width: 340px;
+      box-sizing: border-box;
+    }
+    @media (max-width: 768px){
+      .images{ max-width: 540px; }
+    }
+    @media (min-width: 1024px){
+      .images{ max-width: 900px; }
+    }
+  </style>
+  <style>
+    body{
+      text-align: center;
+      background-color: rgb(0, 0, 52);
+      color: white;
+      font-family: inter;
+      margin: 0;
+      padding: 0 1rem;
+    }
+
+    h1{
+      margin-bottom: 0.8em;
+      margin-top: 1rem;
+      letter-spacing: 1%;
+      line-height: 1.2;
+      font-weight: 500;
+      font-size: clamp(1.4rem, 3vw + 0.8rem, 2.2rem);
+    }
+
+    .medu{
+      background-image: url(Ahmedou.jpg);
+    }
+
+    .image-button{
+      cursor: pointer;
+      width: min(28vw, 9.5rem);
+      aspect-ratio: 3 / 4;
+      border-radius: 10%;
+      background-position: center;
+      background-size: cover;
+      filter: grayscale(50%) brightness(110%) drop-shadow(4px 4px 8px rgba(7, 3, 115, 0.6)) contrast(100%);
+      opacity: 0.7;
+      border: none;
+      transition: transform 220ms cubic-bezier(.22,.61,.36,1),
+                  filter 220ms cubic-bezier(.22,.61,.36,1),
+                  opacity 220ms cubic-bezier(.22,.61,.36,1),
+                  box-shadow 220ms cubic-bezier(.22,.61,.36,1);
+      will-change: transform, filter, opacity;
+    }
+
+    .hitb{
+      background-image: url(hitty.jpg);
+    }
+
+    .image-button:hover{
+      transform: scale(1.05);
+    }
+
+    .image-button:active{
+      transform: scale(0.98);
+    }
+
+    .image-button.selected{
+      filter: grayscale(0%) brightness(120%) drop-shadow(4px 4px 8px rgba(7, 3, 115, 0.8)) contrast(120%);
+      opacity: 1;
+      transform: scale(1.08);
+    }
+
+    .medu.selected {
+      filter: grayscale(0%) brightness(120%) drop-shadow(4px 4px 8px rgba(7, 3, 115, 0.8)) contrast(100%);
+      opacity: 1;
+      transform: scale(1.1);
+      transition: 300ms ease;
+    }
+
+    .ein{
+      background-image: url(einstein.jpg);
+    }
+
+    .images{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 720px;
+      margin: 1.2em auto 0.8em;
+      gap: 2em;
+    }
+
+    .submit{
+      background-color: rgb(48, 48, 185);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      font-size: 1rem;
+      border-radius: 0.6em;
+      width: 100%;
+      max-width: 340px;
+      padding: .8em 1.2em;
+      margin: 1.2em auto 0;
+      cursor: pointer;
+      transition: 200ms ease;
+      display: block;
+    }
+
+    .submit:hover{
+      background-color: rgb(58, 58, 205);
+      transform: translateY(-1px);
+    }
+
+    /* Choice feedback text */
+    #teacher-choice-text{
+      text-align: center;
+      color: #bfeff7;
+      background: rgba(153, 232, 244, 0.12);
+      border: 1px solid rgba(153, 232, 244, 0.4);
+      border-radius: 0.6em;
+      padding: 0.6em 0.9em;
+      width: 100%;
+      max-width: 340px;
+      box-sizing: border-box;
+      margin: 0.6em auto 0.2em;
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+
+    /* Error state for wrong choice */
+    #teacher-choice-text.is-error{
+      color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.12);
+      border: 1px solid rgba(255, 107, 107, 0.4);
+    }
+
+    #teacher-choice-text:empty{ display: none; }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px){
+      .images{ width: min(92vw, 540px); gap: 1.2em; }
+    }
+
+    @media (max-width: 480px){
+      .image-button{ width: min(40vw, 8.5rem); }
+    }
+
+    @media (min-width: 1024px){
+      .images{ width: min(86vw, 900px); }
+    }
+
+    /* Accessibility: reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      .image-button{ transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <h1>who is your favourite teacher?</h1>
+  <div class="images">
+    <button class="hitb image-button"></button>
+    <button class="ein image-button"></button>
+    <button class="medu image-button"></button>
+  </div>
+  <p id="teacher-choice-text"></p>
+  <button class="submit">Submit</button>
+
+  <script>
+    const imageButtons=document.querySelectorAll('.image-button');
+    const submitButton = document.querySelector('.submit')
+    const textDisplay = document.getElementById('teacher-choice-text')
+
+    let selectedButton = null;
+
+    imageButtons.forEach( button => {
+      button.addEventListener('click', () => {
+        imageButtons.forEach(btn => {
+          btn.classList.remove('selected');
+        });
+      button.classList.add('selected');
+      selectedButton = button;
+      if (button.classList.contains('medu')) {
+        textDisplay.textContent = 'Good student';
+        textDisplay.classList.remove('is-error');
+      } else{
+        textDisplay.textContent = `Noooooooooooo!`
+        textDisplay.classList.add('is-error');
+      }
+    });
+    })
+
+    submitButton.addEventListener('click', () => {
+      if(selectedButton) {
+        if (selectedButton.classList.contains('medu')) {
+          window.location.href = 'noute2.html';
+        } else {
+          alert(`Why did you do this?`);
+        }
+      } else{
+        textDisplay.textContent = `Pick one you 5azibe`
+        textDisplay.classList.add('is-error');
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: rgb(0, 0, 52);
+      --line: rgba(255,255,255,0.55);
+      --line-soft: rgba(255,255,255,0.25);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.75);
+      --pill: rgba(255,255,255,0.06);
+      --pill-border: rgba(255,255,255,0.45);
+      --accent: rgb(48, 48, 185);
+    }
+
+    *{ box-sizing: border-box; }
+
+    body{
+      margin:0;
+      padding: 0 1rem;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      min-height: 100svh;
+    }
+
+    /* Page transition: fade-out on navigate */
+    body.fade-out{ opacity: 0; transition: opacity 320ms ease; }
+    @media (prefers-reduced-motion: reduce){ body.fade-out{ transition: none; } }
+
+    .wrap{
+      width: min(92vw, 900px);
+      margin: 0 auto;
+      padding-top: 1.25rem;
+    }
+
+    h1{
+      text-align: center;
+      margin: 1rem 0 0.25rem;
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+      font-weight: 500;
+      font-size: clamp(1.75rem, 3.5vw + 1rem, 2.75rem);
+    }
+
+    .sub{ text-align:center; color: var(--muted); margin: 0.5rem 0 1rem; }
+
+    /* Horizontal guide lines similar to the reference */
+    .lane{ position: relative; }
+    .lane{ transition: filter .25s ease, opacity .25s ease; }
+
+    .question{
+      margin: 2rem auto 1.75rem;
+      width: min(92vw, 900px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 2px solid var(--line);
+      border-radius: 18px;
+      padding: clamp(1rem, 2vw, 1.5rem) clamp(1rem, 3vw, 2rem);
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.35) inset;
+      font-size: clamp(1rem, 1.2rem + 0.5vw, 1.25rem);
+    }
+
+    .grid{
+      width: min(92vw, 900px);
+      margin: 1rem auto 2rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem 1.25rem;
+    }
+
+    @media (min-width: 700px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .opt{
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1.1rem;
+      background: var(--pill);
+      border: 2px solid var(--pill-border);
+      border-radius: 999px;
+      min-height: 52px;
+      transition: transform .12s ease, background-color .12s ease, border-color .12s ease, box-shadow .12s ease;
+      cursor: pointer;
+    }
+
+    .opt:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(255,255,255,0.65);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+
+    .opt.selected{
+      transform: translateY(-2px) scale(1.01);
+      background: rgba(0,0,0,0.22);
+      border-color: rgba(255,255,255,0.75);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.35);
+    }
+
+    .badge{
+      flex: 0 0 auto;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      background: #99e8f4;
+      color: #003042;
+      font-weight: 700;
+      border: 0;
+    }
+
+    .text{ color: var(--text); opacity: 0.95; font-size: 1rem; }
+
+    .footer{ text-align:center; color: var(--muted); margin-top: 1.25rem; }
+
+    /* Success mode focus styling */
+    #result{ margin-top: .5rem; }
+    .success-mode .lane{ filter: blur(3px) brightness(0.6); opacity: 0.85; }
+    .success-mode #result{ font-weight: 700; font-size: clamp(1.05rem, 1.2rem + 0.4vw, 1.4rem); text-shadow: 0 6px 18px rgba(0,0,0,0.35); }
+    .success-mode #nextWrap .next{ transform: scale(1.05); box-shadow: 0 12px 26px rgba(0,0,0,0.35); }
+    .success-mode .footer{ position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(92vw, 900px); z-index: 10; }
+    .success-mode #submitBtn{ filter: blur(3px) brightness(0.6); pointer-events: none; }
+
+    .next{
+      display:inline-block;
+      margin-top: 0.75rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: .8em 1.2em;
+      border-radius: .6em;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    @media (max-width: 480px){
+      #submitBtn{ padding: 1rem 1.5rem; font-size: 1.1rem; border-radius: .75em; }
+    }
+
+    /* Unified button interactions across the site */
+    button, .next{
+      cursor: pointer;
+      transition: background-color .15s ease, filter .15s ease, transform .12s ease, box-shadow .12s ease;
+    }
+    button:hover, .next:hover{ filter: brightness(0.92); }
+    button:active, .next:active{ filter: brightness(0.85); transform: translateY(1px) scale(0.99); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Last Check</h1>
+    <p class="sub">Choose one the right answer</p>
+
+    <div class="lane">
+      <div class="question" role="group" aria-label="question">
+        What is toutou's most favourite word?
+      </div>
+    </div>
+
+    <div class="lane" aria-label="answers">
+      <div class="grid">
+        <button class="opt" type="button" data-choice="A"><span class="badge">A</span><span class="text">l2isti3mad</span></button>
+        <button class="opt" type="button" data-choice="B"><span class="badge">B</span><span class="text">la7wle wla 9wete illa billah</span></button>
+        <button class="opt" type="button" data-choice="C"><span class="badge">C</span><span class="text">Mnt 7marti l5a8ra</span></button>
+        <button class="opt" type="button" data-choice="D"><span class="badge">D</span><span class="text">amenna billahi wa7dehu</span></button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div id="result" aria-live="polite"></div>
+      <button id="submitBtn" class="next" type="button">Let's find out</button>
+      <div id="nextWrap" style="margin-top:0.5rem;"></div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      var selected = null;
+      var buttons = Array.prototype.slice.call(document.querySelectorAll('.opt'));
+      var result = document.getElementById('result');
+      var submit = document.getElementById('submitBtn');
+      var nextWrap = document.getElementById('nextWrap');
+
+      buttons.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          selected = btn.getAttribute('data-choice');
+          buttons.forEach(function(b){ b.classList.remove('selected'); });
+          btn.classList.add('selected');
+          // Clear previous feedback/next on reselect
+          result.textContent = '';
+          result.style.color = '';
+          nextWrap.innerHTML = '';
+          document.body.classList.remove('success-mode');
+          result.classList.remove('success');
+        });
+      });
+
+      submit.addEventListener('click', function(){
+        if(!selected){
+          result.textContent = 'Please select an answer first.';
+          result.style.color = 'var(--muted)';
+          nextWrap.innerHTML = '';
+          return;
+        }
+        if(selected === 'C'){
+          result.textContent = '🎉 Congrats! Are you ready for the surprise?';
+          result.style.color = 'rgb(46, 204, 113)';
+          var nextBtn = document.createElement('a');
+          nextBtn.className = 'next';
+          nextBtn.textContent = 'Yes, take me there!';
+          nextBtn.href = 'noute-surprise.html';
+          nextWrap.innerHTML = '';
+          nextWrap.appendChild(nextBtn);
+          document.body.classList.add('success-mode');
+          result.classList.add('success');
+          nextBtn.addEventListener('click', function(e){
+            e.preventDefault();
+            var href = nextBtn.href;
+            document.body.classList.add('fade-out');
+            setTimeout(function(){ window.location.href = href; }, 320);
+          });
+        } else {
+          result.textContent = '❌ Wrong answer!';
+          result.style.color = 'rgb(231, 76, 60)';
+          nextWrap.innerHTML = '';
+          document.body.classList.remove('success-mode');
+          result.classList.remove('success');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
